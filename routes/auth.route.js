@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register } from "../services/auth.services.js";
+import { login, register, getUser } from "../services/auth.services.js";
 
 const router = Router();
 
@@ -37,6 +37,20 @@ router.post("/register",async(req,res)=>{
 // post /api/auth/forgetPassword
 router.post("/forgetPassword",(req,res)=>{
     res.end("Hello from Forget Password");
+})
+
+// post /api/auth/api
+router.get("/users/:userId",async (req,res)=>{
+    try{
+        const result = await getUser(req)
+        res.send(result)
+    }catch(error){
+        console.log("error: ", error)
+        res.status(400).send({
+            message:"Error Occured",
+            error:error
+        });
+    }
 })
  
 export default router;

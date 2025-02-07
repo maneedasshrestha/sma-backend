@@ -6,7 +6,7 @@ import bcrypt from "bcrypt"
 const prisma = new PrismaClient()
 
 const login = async (req) =>{
-    const {email, password, gender, fullname} = req.body;
+    const {email, password} = req.body;
 
     const user = await prisma.user.findFirst({
         where:{
@@ -32,13 +32,13 @@ const login = async (req) =>{
 }
 
 const register = async (req) => {
-    let {email, password, fullname, gender} = req.body
+    let {email, password, fullName, gender} = req.body
     password = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
         data:{
             email,
             password,
-            fullname,
+            fullName,
             gender
         }
     })
@@ -49,6 +49,20 @@ const register = async (req) => {
 
     return {user, token}; //token: token
 }
+const getUser = async (req) =>{
+    const {userId} = req.params;
+
+    const user = await prisma.user.findFirst({
+        where:{
+            id: userId
+        }
+    })
+    if(!user){
+        return("User of given email doesnot exists!");
+    }
+    return {user}; //token: token
+}
+
 
  
-export {login, register}
+export {login, register, getUser}

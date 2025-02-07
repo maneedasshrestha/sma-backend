@@ -20,11 +20,21 @@ model User{
   email String @unique
   password String
   gender Gender
-  fullname String
+  fullName String
 }
 
 enum Gender {
-  male
-  female
-  others
+  Male
+  Female
+  Others
+}
+
+model Post{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content String
+  likesCount Int @default(0)
+  // User User @relation(fields: [authorId], references: [id])
+  // author User @relation(fields: [authorId], references: [id])
 }
